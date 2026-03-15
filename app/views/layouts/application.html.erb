@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CityPulses</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+</head>
+
+<body>
+
+<div class="layout">
+  <!-- Left icon bar + Sidebar panel -->
+  <aside class="iconbar" aria-hidden="false">
+    <nav>
+      <ul>
+        <li class="icon-item <%= 'selected' if controller_name == 'home' %>" data-key="home">
+          <%= link_to root_path, class: 'icon-square', title: 'Home' do %>
+            <img src="/assets/icons/home.png" alt="Home" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'updates' %>" data-key="updates">
+          <%= link_to updates_path, class: 'icon-square', title: 'Updates' do %>
+            <img src="/assets/icons/updates.png" alt="Updates" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'jobs' %>" data-key="jobs">
+          <%= link_to jobs_path, class: 'icon-square', title: 'Jobs' do %>
+            <img src="/assets/icons/jobs.png" alt="Jobs" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'farming' %>" data-key="farming">
+          <%= link_to farming_index_path, class: 'icon-square', title: 'Farming' do %>
+            <img src="/assets/icons/farming.png" alt="Farming" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'rents' %>" data-key="rents">
+          <%= link_to rents_path, class: 'icon-square', title: 'Rents' do %>
+            <img src="/assets/icons/rents.png" alt="Rents" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'buy' %>" data-key="buy">
+          <%= link_to buy_index_path, class: 'icon-square', title: 'Buy & Sell' do %>
+            <img src="/assets/icons/buy.png" alt="Buy & Sell" width="24" height="24" />
+          <% end %>
+        </li>
+        <li class="icon-item <%= 'selected' if controller_name == 'services' %>" data-key="services">
+          <%= link_to services_path, class: 'icon-square', title: 'Services' do %>
+            <img src="/assets/icons/services.png" alt="Services" width="24" height="24" />
+          <% end %>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="collapse">
+      <button class="collapse-btn">›</button>
+    </div>
+  </aside>
+
+  <aside class="sidebar-panel">
+    <div class="panel-search">
+      <input type="text" placeholder="Search menu..." />
+    </div>
+
+    <div class="panel-title">Home</div>
+
+    <ul class="panel-list">
+      <% case controller_name %>
+      <% when 'home' %>
+        <li><%= link_to 'Welcome', root_path, class: 'panel-link' %></li>
+        <li><%= link_to "Today's updates", updates_path, class: 'panel-link' %></li>
+      <% when 'updates' %>
+        <li><%= link_to 'News', updates_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Alerts', updates_path, class: 'panel-link' %></li>
+      <% when 'jobs' %>
+        <li><%= link_to 'Shopes', jobs_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Goverment', jobs_path, class: 'panel-link' %></li>
+      <% when 'farming' %>
+        <li><%= link_to 'Crops', farming_index_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Markets', farming_index_path, class: 'panel-link' %></li>
+      <% when 'rents' %>
+        <li><%= link_to 'Houses', rents_index_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Flats', rents_index_path, class: 'panel-link' %></li>
+      <% when 'buy' %>
+        <li><%= link_to 'Electronics', buy_index_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Cars', buy_index_path, class: 'panel-link' %></li>
+      <% when 'services' %>
+        <li><%= link_to 'Plumbing', services_index_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Events', services_index_path, class: 'panel-link' %></li>
+      <% end %>
+    </ul>
+
+    <div class="panel-details">
+      <h4>Recommended</h4>
+      <ul class="recommendations">
+        <li>See today's top stories</li>
+        <li>Nearby events</li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- end sidebar block -->
+
+
+  <div class="main">
+
+    <!-- Top Navbar -->
+    <header class="navbar">
+
+      <div class="brand">
+        <strong>CityPulses</strong>
+      </div>
+
+      <div class="nav-right">
+        <% if user_signed_in? %>
+          <span><%= current_user.email %></span>
+          <%= link_to "Logout", destroy_user_session_path, method: :delete %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path %>
+          <%= link_to "Sign Up", new_user_registration_path %>
+        <% end %>
+
+        <%# City selector placed near login details (uses City table) %>
+        <% cities = City.order(:name).pluck(:name) rescue [] %>
+        <form action="<%= root_path %>" method="get" class="city-select-form">
+          <select name="city" class="city-select">
+            <option value="">Select city</option>
+            <% cities.each do |c| %>
+              <option value="<%= c %>" <%= 'selected' if params[:city] == c %>><%= c %></option>
+            <% end %>
+          </select>
+          <button type="submit" class="city-select-btn">Show</button>
+        </form>
+      </div>
+
+    </header>
+
+
+    <!-- Page Content -->
+    <div class="content">
+      <%= yield %>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const mapping = {
+      home: {
+        title: 'Home',
+        items: [ ['H','Welcome'], ['U','Today\'s updates'] ],
+        rec: ['See today\'s top stories','Nearby events']
+      },
+      updates: {
+        title: 'Updates',
+        items: [ ['N','News'], ['A','Alerts'] ],
+        rec: ['Subscribe to alerts','Manage notifications']
+      },
+      jobs: {
+        title: 'Jobs',
+        items: [ ['S','shopes'], ['G','Goverment'] ],
+        rec: ['Post a job','Manage applications']
+      },
+      farming: {
+        title: 'Farming',
+        items: [ ['F','Crops'], ['M','Markets'] ],
+        rec: ['Farming tips','Local suppliers']
+      },
+      rents: {
+        title: 'Rents',
+        items: [ ['R','Houses'], ['F','Flats'] ],
+        rec: ['New listings','Saved searches']
+      },
+      buy: {
+        title: 'Buy & Sell',
+        items: [ ['B','Electronics'], ['C','Cars'] ],
+        rec: ['Create listing','Popular categories']
+      },
+      services: {
+        title: 'Services',
+        items: [ ['S','Plumbing'], ['E','Events'] ],
+        rec: ['Top rated','Request a service']
+      }
+    };
+
+    const iconItems = document.querySelectorAll('.icon-item');
+    const panelTitle = document.querySelector('.sidebar-panel .panel-title');
+    const panelList = document.querySelector('.sidebar-panel .panel-list');
+    const recList = document.querySelector('.sidebar-panel .recommendations');
+    const collapseBtn = document.querySelector('.collapse-btn');
+    const layout = document.querySelector('.layout');
+
+    function renderFor(key){
+      const def = mapping[key];
+      if(!def) return;
+      panelTitle.textContent = def.title;
+      panelList.innerHTML = def.items.map(i=>`<li><span class="badge">${i[0]}</span><span class="label">${i[1]}</span></li>`).join('');
+      recList.innerHTML = def.rec.map(r=>`<li>${r}</li>`).join('');
+    }
+
+    iconItems.forEach(function(li){
+      li.addEventListener('click', function(e){
+        const key = li.dataset.key || (li.querySelector('[data-key]') && li.querySelector('[data-key]').dataset.key);
+        if(!key) return;
+        document.querySelectorAll('.icon-item').forEach(n=>n.classList.remove('selected'));
+        li.classList.add('selected');
+        renderFor(key);
+        layout.classList.remove('collapsed');
+      });
+    });
+
+    collapseBtn.addEventListener('click', function(){
+      layout.classList.toggle('collapsed');
+      collapseBtn.textContent = layout.classList.contains('collapsed') ? '<' : '›';
+    });
+
+    const initial = document.querySelector('.icon-item.selected');
+    const initialKey = initial && initial.dataset.key ? initial.dataset.key : 'home';
+    renderFor(initialKey);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+<h2><%= @buy.title %></h2>
+<p><strong>City:</strong> <%= @buy.city.name if @buy.city %></p>
+<div><%= simple_format @buy.description %></div>
+<%= link_to 'Edit', edit_buy_path(@buy), class: 'button' %>
+<%= link_to 'Delete', buy_path(@buy), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>

@@ -1,0 +1,5 @@
+<h2><%= @update.title %></h2>
+<p><strong>City:</strong> <%= @update.city.name %></p>
+<div><%= simple_format @update.content %></div>
+<%= link_to 'Edit', edit_update_path(@update), class: 'button' %>
+<%= link_to 'Delete', update_path(@update), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>

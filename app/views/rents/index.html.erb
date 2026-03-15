@@ -1,0 +1,10 @@
+<h2>Rents</h2>
+<%= link_to 'New Rent Record', new_rent_path, class: 'button' %>
+<ul>
+  <% @rents.each do |rent| %>
+    <li>
+      <%= link_to rent.title, rent_path(rent) %>
+      <span>City: <%= rent.city.name if rent.city %></span>
+    </li>
+  <% end %>
+</ul>

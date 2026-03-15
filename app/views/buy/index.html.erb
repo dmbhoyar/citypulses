@@ -1,0 +1,10 @@
+<h2>Buy & Sell</h2>
+<%= link_to 'New Buy Record', new_buy_path, class: 'button' %>
+<ul>
+  <% @buys.each do |buy| %>
+    <li>
+      <%= link_to buy.title, buy_path(buy) %>
+      <span>City: <%= buy.city.name if buy.city %></span>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,5 @@
+<h2><%= @rent.title %></h2>
+<p><strong>City:</strong> <%= @rent.city.name if @rent.city %></p>
+<div><%= simple_format @rent.description %></div>
+<%= link_to 'Edit', edit_rent_path(@rent), class: 'button' %>
+<%= link_to 'Delete', rent_path(@rent), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>

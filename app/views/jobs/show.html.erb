@@ -1,0 +1,14 @@
+<h2><%= @job.title %></h2>
+<p><strong>Company:</strong> <%= @job.company %></p>
+<p><strong>Location:</strong> <%= @job.location %></p>
+<p><strong>Category:</strong> <%= @job.category %></p>
+
+<div class="job-description">
+  <%= simple_format @job.description %>
+</div>
+
+<div class="job-actions">
+  <%= link_to 'Edit', edit_job_path(@job), class: 'button' %>
+  <%= link_to 'Delete', job_path(@job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
+  <%= link_to 'Apply', apply_job_path(@job), class: 'button primary' %>
+</div>

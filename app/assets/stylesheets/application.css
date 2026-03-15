@@ -1,0 +1,80 @@
+body{
+  margin:0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color:#333;
+  background:#f6f7f8;
+}
+
+.layout{display:flex;height:100vh;}
+
+/* narrow icon bar on far left */
+.iconbar{
+  width:80px;
+  background:#fff;
+  border-right:1px solid #eee;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+}
+.iconbar nav ul{list-style:none;padding:8px 0;margin:0;width:100%;}
+.iconbar .icon-item{display:flex;align-items:center;justify-content:center;padding:6px 0}
+.icon-square{width:46px;height:46px;border-radius:8px;border:1px solid #eee;background:#fff;color:#a44;font-weight:700;cursor:pointer}
+.icon-item.selected .icon-square{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.collapse{padding:10px 0 18px}
+.collapse-btn{width:36px;height:36px;border-radius:6px;border:1px solid #ddd;background:#fff}
+
+/* secondary left panel */
+.sidebar-panel{
+  width:260px;
+  background:#fff;
+  padding:20px;
+  border-right:1px solid #eee;
+}
+.panel-search input{width:100%;padding:8px 12px;border-radius:6px;border:1px solid #e6e6e6;background:#fbfbfb}
+.panel-title{margin-top:18px;font-size:18px;font-weight:700;color:#333}
+.panel-list{list-style:none;padding:0;margin:12px 0}
+.panel-list li{display:flex;align-items:center;padding:10px 6px;border-radius:6px;color:#444}
+.panel-list li:hover{background:#f5f5f6}
+.panel-list .badge{width:34px;height:34px;border-radius:50%;background:#f0f0f0;color:#9b9b9b;display:inline-flex;align-items:center;justify-content:center;margin-right:12px;font-weight:700}
+.panel-list .label{font-size:15px}
+
+.panel-details{margin-top:12px;padding-top:8px;border-top:1px solid #f1f1f1}
+.panel-details h4{margin:0 0 8px 0;font-size:14px;color:#666}
+.recommendations{list-style:none;padding:0;margin:0}
+.recommendations li{padding:6px 0;color:#555;font-size:13px}
+
+/* collapsed layout */
+.layout.collapsed .sidebar-panel{display:none}
+.layout.collapsed .iconbar{width:64px}
+.iconbar, .sidebar-panel{transition:all 180ms ease}
+
+/* Main area */
+.main{flex:1;display:flex;flex-direction:column}
+.navbar{height:64px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+.brand strong{color:#a10b0b}
+.nav-right a{margin-left:12px;color:#666;text-decoration:none}
+.content{padding:22px;background:transparent;flex:1}
+
+.city-select-form{display:inline-flex;align-items:center;margin-left:14px}
+.city-select{padding:6px 8px;border:1px solid #e6e6e6;border-radius:6px;background:#fff;font-size:13px}
+.city-select-btn{margin-left:6px;padding:6px 8px;border-radius:6px;border:1px solid #ddd;background:#fff}
+
+/* Jobs styles */
+.jobs-search{margin-bottom:12px}
+.jobs-search .search-input{padding:8px 10px;border:1px solid #e6e6e6;border-radius:6px}
+.jobs-list ul{list-style:none;padding:0}
+.jobs-list li{padding:12px;border-bottom:1px solid #f1f1f1}
+.button{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid #ddd;background:#fff}
+.button.primary{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.button.danger{background:#fff;color:#c00;border-color:#c00}
+
+/* Home market box */
+.market-box{background:#fff;padding:16px;border-radius:8px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
+.market-box .city{font-weight:700}
+.market-box .rate{font-size:20px;color:#a10b0b}
+
+/* small responsive tweaks */
+@media(max-width:900px){
+  .sidebar-panel{display:none}
+}

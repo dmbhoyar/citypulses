@@ -1,0 +1,10 @@
+<h2>Farming</h2>
+<%= link_to 'New Farming Record', new_farming_path, class: 'button' %>
+<ul>
+  <% @farmings.each do |farming| %>
+    <li>
+      <%= link_to farming.title, farming_path(farming) %>
+      <span>City: <%= farming.city.name %></span>
+    </li>
+  <% end %>
+</ul>

@@ -1,0 +1,20 @@
+<h2>Jobs</h2>
+
+<div class="jobs-search">
+  <%= form_with url: jobs_path, method: :get, local: true do |f| %>
+    <%= f.search_field :q, value: params[:q], placeholder: 'Search jobs...', class: 'search-input' %>
+    <%= f.submit 'Search' %>
+  <% end %>
+</div>
+
+<div class="jobs-list">
+  <%= link_to 'New Job', new_job_path, class: 'button' %>
+  <ul>
+    <% @jobs.each do |job| %>
+      <li>
+        <h3><%= link_to job.title, job_path(job) %></h3>
+        <p><%= job.company %> — <%= job.location %></p>
+      </li>
+    <% end %>
+  </ul>
+</div>

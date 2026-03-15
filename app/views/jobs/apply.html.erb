@@ -1,0 +1,21 @@
+<h2>Apply for: <%= @job.title %></h2>
+
+<p>If this job redirects externally you'll be sent there automatically. Otherwise use the form below.</p>
+
+<%= form_with url: submit_application_job_path(@job), local: true do |f| %>
+  <div class="field">
+    <%= label_tag :applicant_name, 'Your name' %>
+    <%= text_field_tag :applicant_name %>
+  </div>
+  <div class="field">
+    <%= label_tag :applicant_email, 'Your email' %>
+    <%= email_field_tag :applicant_email %>
+  </div>
+  <div class="field">
+    <%= label_tag :message, 'Message / cover letter' %>
+    <%= text_area_tag :message, nil, rows: 6 %>
+  </div>
+  <div class="actions">
+    <%= submit_tag 'Submit Application' %>
+  </div>
+<% end %>

@@ -1,0 +1,5 @@
+<h2><%= @service.title %></h2>
+<p><strong>City:</strong> <%= @service.city.name if @service.city %></p>
+<div><%= simple_format @service.description %></div>
+<%= link_to 'Edit', edit_service_path(@service), class: 'button' %>
+<%= link_to 'Delete', service_path(@service), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>

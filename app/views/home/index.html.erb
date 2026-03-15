@@ -1,0 +1,21 @@
+<div class="home-hero">
+	<h1>Welcome to CityPulses</h1>
+
+	<div class="market-box">
+		<div>
+			<div class="city">City: <%= @market_rate&.city || 'N/A' %></div>
+			<div class="note">Select a city or use current location to get nearby market rates (within 50km)</div>
+		</div>
+		<div>
+			<div class="rate"><%= @market_rate ? number_to_currency(@market_rate.rate) : '—' %></div>
+			<div class="controls">
+				<%= form_with url: root_path, method: :get, local: true do |f| %>
+					<%= f.label :city, 'City' %>
+					<%= f.text_field :city, value: params[:city] %>
+					<%= f.submit 'Show' %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+

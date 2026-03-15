@@ -1,0 +1,90 @@
+
+<style>
+  .jobs-form-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 60vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f7fa 50%, #fffde7 100%);
+  }
+  .jobs-form-box {
+    background: #fffde7;
+    border-radius: 18px;
+    box-shadow: 0 4px 24px #e0f7fa99;
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 480px;
+    border: 2px solid #b2ebf2;
+  }
+  .jobs-form-box .field {
+    margin-bottom: 1.2rem;
+  }
+  .jobs-form-box label {
+    color: #00796b;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+  .jobs-form-box input,
+  .jobs-form-box textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #b2ebf2;
+    padding: 0.6rem;
+    background: #e0f7fa;
+    color: #00695c;
+    font-size: 1rem;
+    margin-top: 0.2rem;
+  }
+  .jobs-form-box .actions {
+    text-align: center;
+  }
+  .jobs-form-box input[type="submit"] {
+    background: linear-gradient(90deg, #ffb300 0%, #81d4fa 100%);
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 2.2rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .jobs-form-box input[type="submit"]:hover {
+    background: linear-gradient(90deg, #81d4fa 0%, #ffb300 100%);
+  }
+</style>
+
+<div class="jobs-form-center">
+  <div class="jobs-form-box">
+    <%= form_with model: job, local: true do |f| %>
+      <div class="field">
+        <%= f.label :title %>
+        <%= f.text_field :title %>
+      </div>
+      <div class="field">
+        <%= f.label :company %>
+        <%= f.text_field :company %>
+      </div>
+      <div class="field">
+        <%= f.label :location %>
+        <%= f.text_field :location %>
+      </div>
+      <div class="field">
+        <%= f.label :category %>
+        <%= f.text_field :category %>
+      </div>
+      <div class="field">
+        <%= f.label :external_url, 'External URL (optional) - shop/government apply link' %>
+        <%= f.text_field :external_url %>
+      </div>
+      <div class="field">
+        <%= f.label :description %>
+        <%= f.text_area :description, rows: 6 %>
+      </div>
+      <div class="actions">
+        <%= f.submit %>
+      </div>
+    <% end %>
+  </div>
+</div>

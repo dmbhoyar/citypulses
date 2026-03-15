@@ -1,0 +1,5 @@
+<h2><%= @farming.title %></h2>
+<p><strong>City:</strong> <%= @farming.city.name %></p>
+<div><%= simple_format @farming.content %></div>
+<%= link_to 'Edit', edit_farming_path(@farming), class: 'button' %>
+<%= link_to 'Delete', farming_path(@farming), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
