@@ -1,21 +1,139 @@
-<div class="home-hero">
-	<h1>Welcome to CityPulses</h1>
+<style>
+	.home-wrap{display:flex;gap:16px}
+	.main-col{flex:1}
+	.side-col{width:320px}
+	.panel{border:1px solid #ddd;padding:12px;border-radius:6px;background:#fff}
+	.card{border:1px solid #eee;padding:10px;margin-bottom:10px;border-radius:6px}
+	.market-box{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8f9fa;border-radius:6px}
+	.toggle-btn{cursor:pointer;padding:8px 12px;background:#007bff;color:#fff;border-radius:4px;border:none}
+	.city-select{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+</style>
 
-	<div class="market-box">
-		<div>
-			<div class="city">City: <%= @market_rate&.city || 'N/A' %></div>
-			<div class="note">Select a city or use current location to get nearby market rates (within 50km)</div>
-		</div>
-		<div>
-			<div class="rate"><%= @market_rate ? number_to_currency(@market_rate.rate) : '—' %></div>
-			<div class="controls">
-				<%= form_with url: root_path, method: :get, local: true do |f| %>
-					<%= f.label :city, 'City' %>
-					<%= f.text_field :city, value: params[:city] %>
-					<%= f.submit 'Show' %>
+<div class="home-header">
+	<h1>CityPulses</h1>
+	<div class="city-select">
+		<%= form_with url: set_city_path, method: :post, local: true do |f| %>
+			<%= select_tag :city_id, options_from_collection_for_select(@cities, :id, :name, @city&.id), include_blank: 'Choose city', class: 'form-control' %>
+			<%= f.submit 'Set City', class: 'toggle-btn' %>
+		<% end %>
+
+		<button class="toggle-btn" onclick="useLocation()">Use my location</button>
+		<button class="toggle-btn" onclick="togglePanel()">Toggle Panel</button>
+	</div>
+</div>
+
+<div class="home-wrap">
+	<div class="main-col">
+		<div class="panel">
+			<div class="market-box">
+				<div>
+					<div class="city">City: <%= @city&.name || @market_rate&.city || 'N/A' %></div>
+					<div class="note">Date: <%= Time.zone.now.to_date.strftime('%d %b %Y') %></div>
+				</div>
+				<div>
+					<div class="rate" style="font-size:20px;font-weight:600"><%= @market_rate ? number_with_precision(@market_rate.rate, precision:2) : '—' %></div>
+					<div class="controls">
+						<small>Market rate shown is latest available.</small>
+					</div>
+				</div>
+			</div>
+
+			<h3 style="margin-top:16px">Today's Highlights</h3>
+			<div class="card">
+				<strong>Offers</strong>
+				<% if @offers.present? %>
+					<ul>
+						<% @offers.each do |o| %>
+							<li><%= link_to o.title, update_path(o) %></li>
+						<% end %>
+					</ul>
+				<% else %>
+					<div>No offers for selected city.</div>
+				<% end %>
+			</div>
+
+			<div class="card">
+				<strong>Market Rates (sample)</strong>
+				<% if @market_rates_by_commodity.present? %>
+					<table style="width:100%">
+						<thead>
+							<tr><th>Commodity</th><th>Yesterday</th><th>Today</th><th>Tomorrow</th></tr>
+						</thead>
+						<tbody>
+							<% @market_rates_by_commodity.each do |commodity, hash| %>
+								<tr>
+									<td><%= commodity.humanize %></td>
+									<td><%= hash[:yesterday]&.rate || '—' %></td>
+									<td><%= hash[:today]&.rate || '—' %></td>
+									<td><%= hash[:tomorrow]&.rate || '—' %></td>
+								</tr>
+							<% end %>
+						</tbody>
+					</table>
+				<% else %>
+					<div>No market rates available.</div>
+				<% end %>
+			</div>
+
+			<div class="card">
+				<strong>Farming Notes</strong>
+				<% if @farmings.present? %>
+					<ul>
+						<% @farmings.each do |f| %>
+							<li><%= link_to f.title, farming_path(f) %></li>
+						<% end %>
+					</ul>
+				<% else %>
+					<div>No farming notes.</div>
 				<% end %>
 			</div>
 		</div>
 	</div>
+
+	<div class="side-col">
+		<div id="side-panel" class="panel" style="display:none">
+			<h4>Latest Updates</h4>
+			<% if @updates.present? %>
+				<ul>
+					<% @updates.each do |u| %>
+						<li><%= link_to u.title, update_path(u) %></li>
+					<% end %>
+				</ul>
+			<% else %>
+				<div>No updates.</div>
+			<% end %>
+
+			<h4 style="margin-top:12px">Jobs</h4>
+			<% if @jobs.present? %>
+				<ul>
+					<% @jobs.each do |j| %>
+						<li><%= link_to j.title, job_path(j) %></li>
+					<% end %>
+				</ul>
+			<% else %>
+				<div>No jobs.</div>
+			<% end %>
+		</div>
+	</div>
 </div>
+
+<script>
+	function togglePanel(){
+		var p = document.getElementById('side-panel');
+		if(!p) return;
+		p.style.display = p.style.display === 'none' ? 'block' : 'none';
+	}
+
+	function useLocation(){
+		if(!navigator.geolocation){ alert('Geolocation not supported'); return; }
+		navigator.geolocation.getCurrentPosition(function(pos){
+			var lat = pos.coords.latitude; var lng = pos.coords.longitude;
+			var url = new URL(window.location.href);
+			url.searchParams.set('use_location','1');
+			url.searchParams.set('lat',lat);
+			url.searchParams.set('lng',lng);
+			window.location = url.toString();
+		}, function(){ alert('Unable to retrieve your location'); });
+	}
+</script>
 

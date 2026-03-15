@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   # Defines the root path route ("/")
   root "home#index"
+  post 'set_city', to: 'home#set_city', as: :set_city
 
   resources :jobs do
     member do
