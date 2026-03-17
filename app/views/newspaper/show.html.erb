@@ -1,0 +1,16 @@
+<div class="panel">
+  <h1 style="margin:0;text-align:center">CityPulses - <%= @city&.name || 'All Cities' %> Newspaper</h1>
+  <div style="margin-top:12px">
+    <% @updates.each do |u| %>
+      <div class="card">
+        <h2><%= u.title %></h2>
+        <div><small><%= u.published_at ? u.published_at.strftime('%d %b %Y') : u.created_at.strftime('%d %b %Y') %></small></div>
+        <div><%= simple_format(u.content) %></div>
+      </div>
+    <% end %>
+  </div>
+
+  <div style="text-align:center;margin-top:20px">
+    <button onclick="window.print()" class="toggle-btn">Print / Save as PDF</button>
+  </div>
+</div>

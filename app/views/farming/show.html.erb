@@ -1,3 +1,10 @@
+<h1><%= @farming.title %></h1>
+<div><small><%= @farming.city&.name %> — <%= @farming.created_at.strftime('%d %b %Y') %></small></div>
+<div><%= simple_format(@farming.content) %></div>
+
+<% if user_signed_in? %>
+  <%= link_to 'Back', farming_index_path, class: 'toggle-btn' %>
+<% end %>
 <h2><%= @farming.title %></h2>
 <p><strong>City:</strong> <%= @farming.city.name %></p>
 <div><%= simple_format @farming.content %></div>

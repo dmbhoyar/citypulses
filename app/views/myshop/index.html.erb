@@ -1,0 +1,14 @@
+<div class="panel">
+  <h1 style="margin:0">My Shop</h1>
+  <% if @shop %>
+    <h2 style="margin-top:8px"><%= @shop.name %></h2>
+    <div class="card"><%= simple_format(@shop.description) %></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <%= link_to 'Configure', configure_myshop_path, class: 'toggle-btn' %>
+      <%= link_to 'Workers', workers_myshop_path, class: 'button' %>
+      <%= link_to 'Offers', myshop_offer_new_path, class: 'button' %>
+    </div>
+  <% else %>
+    <p>You don't have a shop yet. <%= link_to 'Create one', configure_myshop_path, class: 'toggle-btn' %></p>
+  <% end %>
+</div>

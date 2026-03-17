@@ -1,3 +1,30 @@
+<h1>Apply to: <%= @job.title %></h1>
+
+<%= form_with url: submit_application_job_path(@job), local: true do |f| %>
+  <div>
+    <%= label_tag :applicant_name, 'Your name' %><br>
+    <%= text_field_tag :applicant_name %>
+  </div>
+  <div>
+    <%= label_tag :applicant_email, 'Email' %><br>
+    <%= email_field_tag :applicant_email %>
+  </div>
+  <div>
+    <%= label_tag :applicant_phone, 'Phone' %><br>
+    <%= telephone_field_tag :applicant_phone %>
+  </div>
+  <div>
+    <%= label_tag :message, 'Message' %><br>
+    <%= text_area_tag :message %>
+  </div>
+  <div>
+    <%= label_tag :resume_url, 'Resume URL (optional)' %><br>
+    <%= text_field_tag :resume_url %>
+  </div>
+  <div>
+    <%= f.submit 'Submit Application', class: 'toggle-btn' %>
+  </div>
+<% end %>
 <h2>Apply for: <%= @job.title %></h2>
 
 <p>If this job redirects externally you'll be sent there automatically. Otherwise use the form below.</p>

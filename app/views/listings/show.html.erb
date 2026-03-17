@@ -1,0 +1,25 @@
+<div class="panel">
+  <h1 style="margin-top:0"><%= @listing.title %></h1>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px">
+      <p><strong>Category:</strong> <%= @listing.category.capitalize %></p>
+      <p><strong>Price:</strong> <%= @listing.price.present? ? number_to_currency(@listing.price) : 'Contact owner' %></p>
+      <p><strong>Location:</strong> <%= @listing.location.presence || '—' %></p>
+      <p><strong>Contact:</strong> <%= @listing.contact_number.presence || '—' %></p>
+    </div>
+    <div style="flex:2;min-width:200px">
+      <%= simple_format(@listing.description) %>
+    </div>
+  </div>
+
+  <div style="margin-top:12px">
+    <% if user_signed_in? && (current_user == @listing.user || current_user.superadmin?) %>
+      <%= link_to 'Edit', edit_listing_path(@listing), class: 'toggle-btn' %>
+      <%= link_to 'Remove', listing_path(@listing), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
+    <% else %>
+      <% if @listing.contact_number.present? %>
+        <a href="tel:<%= @listing.contact_number %>" class="toggle-btn">Call Owner</a>
+      <% end %>
+    <% end %>
+  </div>
+</div>

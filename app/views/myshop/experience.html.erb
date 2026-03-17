@@ -1,0 +1,18 @@
+<html>
+<head>
+  <title>Experience Letter</title>
+  <style>body{font-family:Arial;margin:20px}</style>
+</head>
+<body>
+  <h1>Experience Letter</h1>
+  <% if @shop %>
+    <p>To whom it may concern,</p>
+    <p>This is to certify that <strong><%= current_user.first_name %> <%= current_user.last_name %></strong> has been associated with <strong><%= @shop.name %></strong> as a shop owner.</p>
+    <p>Shop address: <%= @shop.address %></p>
+    <p>Issued on <%= Date.current.strftime('%d %b %Y') %></p>
+    <p><button onclick="window.print()" class="toggle-btn">Print / Save as PDF</button></p>
+  <% else %>
+    <p>No shop found.</p>
+  <% end %>
+</body>
+</html>

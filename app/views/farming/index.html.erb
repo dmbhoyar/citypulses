@@ -1,3 +1,20 @@
+<h1>Farming Guides & Updates</h1>
+
+<% if @farmings.any? %>
+  <% @farmings.each do |f| %>
+    <div class="card">
+      <h3><%= link_to f.title, farming_path(f) %></h3>
+      <div><%= truncate(f.content, length: 200) %></div>
+      <div><small><%= f.city&.name %></small></div>
+    </div>
+  <% end %>
+<% else %>
+  <p>No farming articles yet.</p>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= link_to 'Add Farming Note', new_farming_path, class: 'toggle-btn' %>
+<% end %>
 <h2>Farming</h2>
 <%= link_to 'New Farming Record', new_farming_path, class: 'button' %>
 <ul>

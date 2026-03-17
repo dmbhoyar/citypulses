@@ -1,14 +1,21 @@
-<h2><%= @job.title %></h2>
-<p><strong>Company:</strong> <%= @job.company %></p>
-<p><strong>Location:</strong> <%= @job.location %></p>
-<p><strong>Category:</strong> <%= @job.category %></p>
+<div class="panel">
+  <h1 style="margin-top:0"><%= @job.title %></h1>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px">
+      <p><strong>Company:</strong> <%= @job.company.presence || '—' %></p>
+      <p><strong>Location:</strong> <%= @job.location.presence || '—' %></p>
+      <p><strong>Category:</strong> <%= @job.category.presence || '—' %></p>
+    </div>
+    <div style="flex:2;min-width:200px">
+      <%= simple_format @job.description %>
+    </div>
+  </div>
 
-<div class="job-description">
-  <%= simple_format @job.description %>
-</div>
-
-<div class="job-actions">
-  <%= link_to 'Edit', edit_job_path(@job), class: 'button' %>
-  <%= link_to 'Delete', job_path(@job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
-  <%= link_to 'Apply', apply_job_path(@job), class: 'button primary' %>
+  <div style="margin-top:12px">
+    <% if user_signed_in? && (current_user == @job.user || current_user.superadmin?) %>
+      <%= link_to 'Edit', edit_job_path(@job), class: 'button' %>
+      <%= link_to 'Delete', job_path(@job), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
+    <% end %>
+    <%= link_to 'Apply', apply_job_path(@job), class: 'toggle-btn' %>
+  </div>
 </div>

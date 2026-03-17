@@ -5,41 +5,62 @@ body{
   background:#f6f7f8;
 }
 
+:root{
+  --accent-pink: #C368CA; /* Orchid Mist */
+  --accent-coral: #F391A0; /* Cotton Candy */
+  --light-bg: #F4EDCD;    /* Cornsilk */
+  --accent-green: #C7F4A4;/* Tea Green */
+  --muted: #f3eef6;
+  --text-strong: #222;
+}
+
 .layout{display:flex;height:100vh;}
 
 /* narrow icon bar on far left */
 .iconbar{
-  width:80px;
-  background:#fff;
+  width:96px;
+  background:#ffffff;
   border-right:1px solid #eee;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-between;
+  padding-top:8px;
 }
 .iconbar nav ul{list-style:none;padding:8px 0;margin:0;width:100%;}
-.iconbar .icon-item{display:flex;align-items:center;justify-content:center;padding:6px 0}
-.icon-square{width:46px;height:46px;border-radius:8px;border:1px solid #eee;background:#fff;color:#a44;font-weight:700;cursor:pointer}
-.icon-item.selected .icon-square{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.iconbar .icon-item{display:flex;align-items:center;justify-content:center;padding:8px 0}
+.icon-square{width:72px;height:72px;border-radius:12px;border:1px solid #f0f0f0;background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:6px;box-sizing:border-box;transition:transform .12s ease,box-shadow .12s ease}
+.icon-square img{max-width:48px;max-height:48px;object-fit:contain;border-radius:6px;display:block}
+.icon-square:hover{transform:translateY(-3px);box-shadow:0 6px 18px rgba(16,24,40,0.08)}
+.icon-item.selected .icon-square{background:linear-gradient(180deg,var(--accent-pink),var(--accent-coral));color:#fff;border-color:rgba(0,0,0,0.06);box-shadow:0 8px 26px rgba(195,104,202,0.18)}
 .collapse{padding:10px 0 18px}
 .collapse-btn{width:36px;height:36px;border-radius:6px;border:1px solid #ddd;background:#fff}
 
 /* secondary left panel */
 .sidebar-panel{
   width:260px;
-  background:#fff;
+  background:linear-gradient(180deg,#ffffff 0%, var(--light-bg) 6%);
   padding:20px;
   border-right:1px solid #eee;
+  display:flex;
+  flex-direction:column;
 }
+/* allow middle content to grow and scroll while keeping auth pinned */
+.sidebar-panel .sidebar-content{flex:1;overflow:auto}
 .panel-search input{width:100%;padding:8px 12px;border-radius:6px;border:1px solid #e6e6e6;background:#fbfbfb}
-.panel-title{margin-top:18px;font-size:18px;font-weight:700;color:#333}
+.panel-title{margin-top:18px;font-size:18px;font-weight:700;color:var(--text-strong)}
+.panel-title{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:6px}
+.panel-title .panel-icon{width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center}
+.sidebar-panel{position:relative}
+.sidebar-panel .panel-title{border-left:4px solid transparent}
+.sidebar-panel .panel-title.active{background:linear-gradient(90deg,#fff,#fbfbfb);border-left-color:var(--accent-pink)}
 .panel-list{list-style:none;padding:0;margin:12px 0}
 .panel-list li{display:flex;align-items:center;padding:10px 6px;border-radius:6px;color:#444}
 .panel-list li:hover{background:#f5f5f6}
-.panel-list .badge{width:34px;height:34px;border-radius:50%;background:#f0f0f0;color:#9b9b9b;display:inline-flex;align-items:center;justify-content:center;margin-right:12px;font-weight:700}
+.panel-list .badge{width:34px;height:34px;border-radius:50%;background:var(--muted);color:var(--accent-pink);display:inline-flex;align-items:center;justify-content:center;margin-right:12px;font-weight:800}
 .panel-list .label{font-size:15px}
 
-.panel-details{margin-top:12px;padding-top:8px;border-top:1px solid #f1f1f1}
+.panel-details{margin-top:12px;padding-top:8px;border-top:1px solid rgba(0,0,0,0.06)}
 .panel-details h4{margin:0 0 8px 0;font-size:14px;color:#666}
 .recommendations{list-style:none;padding:0;margin:0}
 .recommendations li{padding:6px 0;color:#555;font-size:13px}
@@ -52,7 +73,11 @@ body{
 /* Main area */
 .main{flex:1;display:flex;flex-direction:column}
 .navbar{height:64px;background:#fff;border-bottom:1px solid #eee;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
-.brand strong{color:#a10b0b}
+.brand strong{color:var(--accent-pink)}
+.brand strong{font-size:18px}
+
+/* Page header inside views */
+.home-header h1{font-size:28px;margin:0 0 12px;color:var(--accent-pink)}
 .nav-right a{margin-left:12px;color:#666;text-decoration:none}
 .content{padding:22px;background:transparent;flex:1}
 
@@ -66,15 +91,93 @@ body{
 .jobs-list ul{list-style:none;padding:0}
 .jobs-list li{padding:12px;border-bottom:1px solid #f1f1f1}
 .button{display:inline-block;padding:8px 12px;border-radius:6px;border:1px solid #ddd;background:#fff}
-.button.primary{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.button.primary{background:var(--accent-pink);color:#fff;border-color:var(--accent-coral)}
 .button.danger{background:#fff;color:#c00;border-color:#c00}
 
 /* Home market box */
 .market-box{background:#fff;padding:16px;border-radius:8px;border:1px solid #eee;display:flex;align-items:center;justify-content:space-between}
 .market-box .city{font-weight:700}
-.market-box .rate{font-size:20px;color:#a10b0b}
+.market-box .rate{font-size:20px;color:var(--accent-pink)}
 
 /* small responsive tweaks */
 @media(max-width:900px){
   .sidebar-panel{display:none}
 }
+
+/* Shared panels and cards used across views */
+.panel{background:#fff;border:1px solid #eee;border-radius:10px;padding:14px;margin-bottom:14px;box-shadow:0 1px 2px rgba(0,0,0,0.02)}
+.card{background:#fff;border:1px solid #f3f3f3;border-radius:8px;padding:12px;margin-bottom:12px}
+.card h3{margin:0 0 6px 0;font-size:18px}
+.card p{margin:6px 0;color:#444}
+
+/* Buttons tuned for touch and readability */
+.toggle-btn, .button, .button.primary, .button.danger{display:inline-block;padding:10px 14px;border-radius:8px;border:1px solid #ddd;background:#fff;color:#333;font-weight:600;cursor:pointer;text-decoration:none}
+.toggle-btn{background:#007bff;color:#fff;border-color:#0069d9}
+.toggle-btn.small{padding:6px 10px;border-radius:6px;font-weight:600}
+.button.primary{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.button.danger{background:#fff;color:#c00;border-color:#c00}
+
+/* Forms and inputs */
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea, select {width:100%;padding:10px;border:1px solid #e6e6e6;border-radius:8px;background:#fff;font-size:15px}
+label{font-weight:700;font-size:14px;color:#333}
+form .form-row{margin-bottom:12px}
+
+/* Devise pages */
+.devise-panel{max-width:720px;margin:0 auto;padding:20px;background:#fff;border:1px solid #eee;border-radius:10px}
+.devise-panel h2{font-size:22px;color:var(--accent-pink);margin-bottom:12px}
+.devise-form .field{margin-bottom:14px}
+.devise-form label{display:block;margin-bottom:6px;font-weight:700}
+.devise-form input[type="text"],.devise-form input[type="email"],.devise-form input[type="password"],.devise-form input[type="tel"]{width:100%;padding:10px;border:1px solid #e6e6e6;border-radius:8px}
+.devise-form .actions{margin-top:12px}
+.devise-form .button.primary{background:#a10b0b;color:#fff;border-color:#8b0a0a}
+.devise-form .button{padding:8px 12px}
+.devise-links{margin-top:12px}
+
+/* Sidebar user card */
+.sidebar-user{background:#fff;border:none;border-radius:10px;padding:12px;margin-bottom:12px;margin-top:12px;}
+/* pin the user card to the bottom of the sidebar */
+.sidebar-panel .sidebar-user{margin-top:auto}
+.sidebar-user .user-top{display:flex;align-items:center;gap:10px}
+.sidebar-user .user-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--accent-pink),var(--accent-coral));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+.sidebar-user .user-name{font-weight:700;color:#222}
+.sidebar-user .user-email{font-size:12px;color:#666}
+.sidebar-user .user-actions{margin-top:10px;display:flex;gap:8px}
+.sidebar-user .button{padding:8px 10px;border-radius:8px;border:1px solid #ddd;background:#fff}
+.sidebar-user{background:transparent;border:none;border-radius:0;padding:6px 0;margin:0;margin-top:12px;border-top:1px solid #f1f1f1}
+.sidebar-user .user-top{display:flex;align-items:center;gap:10px;padding:6px 8px}
+.sidebar-user .user-info{display:flex;flex-direction:column;margin-left:8px}
+.sidebar-user .user-name{font-weight:700;color:#222;font-size:14px}
+.sidebar-user .user-actions{margin-top:6px;display:flex;gap:8px;padding:6px 8px}
+.sidebar-user .button{padding:8px 10px;border-radius:6px;border:1px solid #ddd;background:#fff}
+.sidebar-user .button.primary{background:var(--accent-pink);color:#fff;border-color:var(--accent-coral)}
+.sidebar-user.sidebar-auth .button{width:100%;display:block}
+.sidebar-user.sidebar-auth .button{width:100%;display:block}
+.sidebar-user .auth-links{display:flex;gap:8px;padding:6px 8px}
+
+/* Compact placeholder for iconbar spacing */
+.iconbar-auth-placeholder{width:100%;display:block}
+
+/* Tables for market rates and lists */
+table.rates{width:100%;border-collapse:collapse;font-size:16px}
+table.rates th, table.rates td{padding:10px;border-bottom:1px solid #f1f1f1;text-align:left}
+table.rates th{background:#fafafa;font-weight:700;color:#333}
+
+/* Emphasis styles for market numbers */
+.market-up{color:#28a745;font-weight:700}
+.market-down{color:#dc3545;font-weight:700}
+.market-neutral{color:#6c757d}
+
+/* Newspaper and printable pages */
+@media print{
+  .toggle-btn, .iconbar, .sidebar-panel, .nav-right { display:none !important }
+  body { background: #fff }
+  .panel, .card { box-shadow:none;border:none }
+}
+
+/* Accessibility helpers */
+.sr-only{position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* Responsive grid for main cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}

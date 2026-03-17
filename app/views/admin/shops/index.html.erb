@@ -1,0 +1,12 @@
+<h1>Shops</h1>
+<table>
+  <tr><th>Name</th><th>Owner</th><th>City</th><th>Actions</th></tr>
+  <% @shops.each do |s| %>
+    <tr>
+      <td><%= s.name %></td>
+      <td><%= s.user&.email %></td>
+      <td><%= s.city&.name %></td>
+      <td><%= link_to 'Remove', admin_shop_path(s), method: :delete, data: { confirm: 'Remove shop?' } %></td>
+    </tr>
+  <% end %>
+</table>

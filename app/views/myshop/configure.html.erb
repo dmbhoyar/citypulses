@@ -1,0 +1,26 @@
+<div class="panel">
+  <h1 style="margin:0">Configure Shop</h1>
+  <div style="margin-top:12px">
+    <%= form_with model: @shop, url: configure_myshop_path, method: :patch, local: true do |f| %>
+      <div class="form-row">
+        <%= f.label :name %>
+        <%= f.text_field :name %>
+      </div>
+      <div class="form-row">
+        <%= f.label :description %>
+        <%= f.text_area :description %>
+      </div>
+      <div class="form-row">
+        <%= f.label :phone %>
+        <%= f.text_field :phone %>
+      </div>
+      <div class="form-row">
+        <%= f.label :address %>
+        <%= f.text_field :address %>
+      </div>
+      <div class="form-row">
+        <%= f.submit 'Save', class: 'toggle-btn' %>
+      </div>
+    <% end %>
+  </div>
+</div>

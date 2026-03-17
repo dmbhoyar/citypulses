@@ -1,0 +1,46 @@
+<div class="offers-page">
+  <div class="offers-header">
+    <h2>Offers & Benefits</h2>
+    <p>Today's date: <strong><%= @today.strftime('%d %b %Y') %></strong></p>
+    <div class="city-info">
+      Showing offers for: <strong><%= @city ? @city.name : 'All Cities' %></strong>
+    </div>
+  </div>
+
+  <div class="offers-content">
+    <section class="offers-list">
+      <h3>Offers for <%= @city ? @city.name : 'All Cities' %></h3>
+      <% if @offers.present? %>
+        <ul>
+          <% @offers.each do |o| %>
+            <li>
+              <strong><%= o.title %></strong>
+              <div class="meta"><%= o.created_at.strftime('%d %b %Y') %> — <%= o.city.try(:name) %></div>
+              <div class="body"><%= truncate(strip_tags(o.body || o.description || ''), length: 180) %></div>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>No current offers.</p>
+      <% end %>
+    </section>
+
+    <aside class="offers-side">
+      <section class="todays-events">
+        <h4>Today's Events</h4>
+        <% if @events.present? %>
+          <ul>
+            <% @events.each do |e| %>
+              <li>
+                <strong><%= e.title %></strong>
+                <div class="meta"><%= e.created_at.strftime('%I:%M %p') %></div>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p>No events listed for today.</p>
+        <% end %>
+      </section>
+    </aside>
+  </div>
+</div>

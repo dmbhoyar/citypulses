@@ -1,5 +1,5 @@
 class ServicesController < ApplicationController
   def index
-    @services = Service.all
+    @services = Listing.where(category: 'service').order(created_at: :desc)
   end
 end

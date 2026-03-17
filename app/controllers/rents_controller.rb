@@ -1,18 +1,19 @@
 class RentsController < ApplicationController
+  before_action :set_rent, only: [:show, :edit, :update]
+
   def index
-    @rents = Rent.all
+    @rents = Listing.where(category: 'rent').order(created_at: :desc)
   end
 
   def show
-    @rent = Rent.find(params[:id])
   end
 
   def new
-    @rent = Rent.new
+    @rent = current_user ? current_user.listings.build(category: 'rent') : Listing.new(category: 'rent')
   end
 
   def create
-    @rent = Rent.new(rent_params)
+    @rent = current_user ? current_user.listings.build(rent_params.merge(category: 'rent')) : Listing.new(rent_params.merge(category: 'rent'))
     if @rent.save
       redirect_to @rent, notice: 'Rent record created.'
     else
@@ -21,15 +22,22 @@ class RentsController < ApplicationController
   end
 
   def edit
-    @rent = Rent.find(params[:id])
   end
 
   def update
-    @rent = Rent.find(params[:id])
     if @rent.update(rent_params)
       redirect_to @rent, notice: 'Rent record updated.'
     else
       render :edit
     end
+  end
+
+  private
+  def set_rent
+    @rent = Listing.find(params[:id])
+  end
+
+  def rent_params
+    params.require(:listing).permit(:title, :description, :price, :contact_number, :city_id, :location)
   end
 end

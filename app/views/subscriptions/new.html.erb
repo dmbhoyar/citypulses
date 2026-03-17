@@ -1,0 +1,12 @@
+<h1>Subscribe your shop</h1>
+<p>Subscription gives access to shop features. Demo price: ₹1000/year.</p>
+
+<%= form_with url: subscriptions_path, local: true do |f| %>
+  <div>
+    <label>Amount (INR)</label><br>
+    <%= number_field_tag :amount, 1000 %>
+  </div>
+  <div style="margin-top:12px">
+    <%= f.submit 'Subscribe', class: 'toggle-btn' %>
+  </div>
+<% end %>

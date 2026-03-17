@@ -1,5 +1,18 @@
-<h2><%= @update.title %></h2>
-<p><strong>City:</strong> <%= @update.city.name %></p>
-<div><%= simple_format @update.content %></div>
-<%= link_to 'Edit', edit_update_path(@update), class: 'button' %>
-<%= link_to 'Delete', update_path(@update), method: :delete, data: { confirm: 'Are you sure?' }, class: 'button danger' %>
+<div class="panel max-w-lg mx-auto">
+	<div class="panel-heading">
+		<h1 class="mb-0"><%= @update.title %></h1>
+	</div>
+	<div class="panel-body">
+		<div class="text-muted text-sm mb-3">
+			<strong>City:</strong> <%= @update.city&.name || 'All' %> • <%= @update.created_at.strftime('%d %B %Y') %>
+		</div>
+		<div class="prose">
+			<%= simple_format @update.content %>
+		</div>
+	</div>
+	<div class="panel-footer">
+		<%= link_to 'Edit', edit_update_path(@update), class: 'btn-secondary' %>
+		<%= link_to 'Delete', update_path(@update), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-danger ml-2' %>
+		<%= link_to 'Back', updates_path, class: 'btn-link ml-2' %>
+	</div>
+</div>

@@ -1,64 +1,275 @@
 <style>
 	.home-wrap{display:flex;gap:16px}
 	.main-col{flex:1}
-	.side-col{width:320px}
-	.panel{border:1px solid #ddd;padding:12px;border-radius:6px;background:#fff}
-	.card{border:1px solid #eee;padding:10px;margin-bottom:10px;border-radius:6px}
-	.market-box{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#f8f9fa;border-radius:6px}
+	.side-col{width:340px}
+	.panel{border:1px solid #e6e6e6;padding:14px;border-radius:8px;background:#ffffff}
+	.card{border:1px solid #f0f0f0;padding:12px;margin-bottom:12px;border-radius:8px;background:#fafafa}
+	.market-box{display:flex;justify-content:space-between;align-items:center;padding:14px;border-radius:8px}
 	.toggle-btn{cursor:pointer;padding:8px 12px;background:#007bff;color:#fff;border-radius:4px;border:none}
-	.city-select{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+	.city-select{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+
+	/* Metals top cards */
+	.metals-row{display:flex;gap:12px;margin:12px 0;flex-wrap:wrap}
+	.metal-card{background:linear-gradient(180deg,#fffdf3,#fff8e6);padding:14px;border-radius:10px;min-width:180px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+	.metal-card.silver{background:linear-gradient(180deg,#f7f8fb,#f5f6f8)}
+	.metal-title{font-weight:700;display:flex;align-items:center;gap:8px;color:#b8860b}
+	.metal-title.silver{color:#616161}
+	.metal-value{font-size:20px;font-weight:700;margin-top:8px}
+	.metal-note{color:#6d4c41;font-size:13px;margin-top:6px}
+	.metal-icon{width:20px;height:20px;display:inline-block}
+
+	/* News */
+	.news-card .card-head strong{display:flex;align-items:center;gap:8px}
+	.news-list{list-style:none;padding-left:0;margin:0}
+	.news-list li{margin-bottom:8px}
+	.news-list a{color:#0b5ed7;text-decoration:none}
+	.news-list a:hover{text-decoration:underline}
+	.news-meta{font-size:11px;color:#777;margin-top:3px}
+	.badge-source{display:inline-block;background:#eef6ff;color:#1761a0;padding:2px 6px;border-radius:12px;font-size:11px;margin-right:6px}
+
+	/* Market table */
+	.market-table{width:100%;border-collapse:collapse;font-size:15px}
+	.market-table th{background:#fafafa;text-align:left;padding:8px;border-bottom:1px solid #eee}
+	.market-table td{padding:8px;border-bottom:1px solid #f6f6f6}
+	.market-table tr:nth-child(even) td{background:#fff}
+
+	/* Weather */
+	.weather-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+	.weather-head strong{display:flex;align-items:center;gap:8px}
 </style>
 
-<div class="home-header">
-	<h1>CityPulses</h1>
-	<div class="city-select">
-		<%= form_with url: set_city_path, method: :post, local: true do |f| %>
-			<%= select_tag :city_id, options_from_collection_for_select(@cities, :id, :name, @city&.id), include_blank: 'Choose city', class: 'form-control' %>
-			<%= f.submit 'Set City', class: 'toggle-btn' %>
-		<% end %>
+<!-- Gold & Silver cards -->
+<div class="metals-row">
+	<div class="metal-card">
+		<div class="metal-title">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#b8860b" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>
+			</span>
+			24K Gold /g
+		</div>
+		<div class="metal-value"> 
+			<%= @gold_24_per_g ? "₹#{number_with_delimiter(@gold_24_per_g)}" : '—' %> <% if @gold_24_per_g.present? %><small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small><% end %>
+		</div>
+		<div class="metal-note">
+			<% if @gold_24_per_10g_retail.present? %>
+				Per 10g (retail): <strong><%= "₹#{number_with_delimiter(@gold_24_per_10g_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% elsif @gold_24_per_10g_spot.present? %>
+				Per 10g: <strong><%= "₹#{number_with_delimiter(@gold_24_per_10g_spot)}" %></strong>
+			<% end %>
+		</div>
+	</div>
 
-		<button class="toggle-btn" onclick="useLocation()">Use my location</button>
-		<button class="toggle-btn" onclick="togglePanel()">Toggle Panel</button>
+	<div class="metal-card">
+		<div class="metal-title">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#b8860b" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+			</span>
+			22K Gold /g
+		</div>
+		<div class="metal-value"> 
+			<%= @gold_22_per_g ? "₹#{number_with_delimiter(@gold_22_per_g)}" : '—' %> <% if @gold_22_per_g.present? %><small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small><% end %>
+		</div>
+		<div class="metal-note">
+			<% if @gold_22_per_10g_retail.present? %>
+				Per 10g (retail): <strong><%= "₹#{number_with_delimiter(@gold_22_per_10g_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% elsif @gold_22_per_10g_spot.present? %>
+				Per 10g: <strong><%= "₹#{number_with_delimiter(@gold_22_per_10g_spot)}" %></strong>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="metal-card">
+		<div class="metal-title">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#b8860b" xmlns="http://www.w3.org/2000/svg"><polygon points="12,2 15,11 23,11 17,16 19,24 12,19 5,24 7,16 1,11 9,11"/></svg>
+			</span>
+			18K Gold /g
+		</div>
+		<div class="metal-value"> 
+			<%= @gold_18_per_g ? "₹#{number_with_delimiter(@gold_18_per_g)}" : '—' %> <% if @gold_18_per_g.present? %><small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small><% end %>
+		</div>
+		<div class="metal-note">
+			<% if @gold_18_per_10g_retail.present? %>
+				Per 10g (retail): <strong><%= "₹#{number_with_delimiter(@gold_18_per_10g_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% elsif @gold_18_per_10g_spot.present? %>
+				Per 10g: <strong><%= "₹#{number_with_delimiter(@gold_18_per_10g_spot)}" %></strong>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="metal-card silver">
+		<div class="metal-title silver">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#606060" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/></svg>
+			</span>
+			Silver /g
+		</div>
+		<div class="metal-value"> 
+			<%= @metals && @metals[:silver] ? "₹#{number_with_delimiter(@metals[:silver].round(2))}" : '—' %>
+		</div>
+		<div class="metal-note">
+			<% if @silver_per_10g_retail.present? %>
+				Per 10g (retail): <strong><%= "₹#{number_with_delimiter(@silver_per_10g_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% elsif @silver_per_10g_spot.present? %>
+				Per 10g: <strong><%= "₹#{number_with_delimiter(@silver_per_10g_spot)}" %></strong>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="metal-card silver">
+		<div class="metal-title silver">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#606060" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="6" width="16" height="12" rx="2"/></svg>
+			</span>
+			Silver /10g
+		</div>
+		<div class="metal-value"> 
+			<%= @silver_per_10g_spot ? "₹#{number_with_delimiter(@silver_per_10g_spot)}" : '—' %> <% if @silver_per_10g_spot.present? %><small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small><% end %>
+		</div>
+		<div class="metal-note">
+			<% if @silver_per_10g_retail.present? %>
+				Retail: <strong><%= "₹#{number_with_delimiter(@silver_per_10g_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% end %>
+		</div>
+	</div>
+
+	<div class="metal-card silver">
+		<div class="metal-title silver">
+			<span class="metal-icon" aria-hidden>
+				<svg viewBox="0 0 24 24" width="20" height="20" fill="#606060" xmlns="http://www.w3.org/2000/svg"><polygon points="12,2 15,11 23,11 17,16 19,24 12,19 5,24 7,16 1,11 9,11"/></svg>
+			</span>
+			Silver /kg
+		</div>
+		<div class="metal-value"> 
+			<%= @silver_per_kg_spot ? "₹#{number_with_delimiter(@silver_per_kg_spot)}" : '—' %> <% if @silver_per_kg_spot.present? %><small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small><% end %>
+		</div>
+		<div class="metal-note">
+			<% if @silver_per_kg_retail.present? %>
+				Retail: <strong><%= "₹#{number_with_delimiter(@silver_per_kg_retail)}" %></strong> <small style="color:#9e9e9e;opacity:0.8;font-size:11px;margin-left:6px">+ GST</small>
+			<% end %>
+		</div>
 	</div>
 </div>
 
 <div class="home-wrap">
 	<div class="main-col">
 		<div class="panel">
-			<div class="market-box">
-				<div>
-					<div class="city">City: <%= @city&.name || @market_rate&.city || 'N/A' %></div>
-					<div class="note">Date: <%= Time.zone.now.to_date.strftime('%d %b %Y') %></div>
+			<!-- city header removed (hidden by user request) -->
+			<h3 style="margin-top:16px"><%= t('layout.todays_highlights') %></h3>
+			<div class="card home-card">
+				<div class="card-head" style="display:flex;justify-content:space-between;align-items:center">
+					<strong style="font-size:16px;color:#2e7d32"><%= t('layout.city_news') %></strong>
+					<small style="color:#666">Local headlines for your city</small>
 				</div>
-				<div>
-					<div class="rate" style="font-size:20px;font-weight:600"><%= @market_rate ? number_with_precision(@market_rate.rate, precision:2) : '—' %></div>
-					<div class="controls">
-						<small>Market rate shown is latest available.</small>
-					</div>
-				</div>
-			</div>
-
-			<h3 style="margin-top:16px">Today's Highlights</h3>
-			<div class="card">
-				<strong>Offers</strong>
-				<% if @offers.present? %>
+				<div class="card-body">
+				<% if defined?(@city_news) && @city_news.present? %>
+					<ul>
+						<% @city_news.each do |item| %>
+							<li style="margin-bottom:6px">
+																<% display_title = (ENV['ENABLE_TRANSLATION'] == '1') ? translate_api_text(item[:title]) : item[:title] %>
+																<%= link_to display_title, item[:link], target: '_blank', rel: 'noopener' %>
+																<%# quick external translate option that opens Google Translate in a new tab (no server cost) %>
+																<% if I18n.locale.to_s != 'en' %>
+																	<small style="margin-left:6px"><a href="<%= external_translate_url(item[:link], I18n.locale) %>" target="_blank" rel="noopener">Translate</a></small>
+																<% end %>
+								<% if item[:source] || item[:pubDate] %>
+									<div style="font-size:11px;color:#777;margin-top:3px">
+										<% if item[:source] %> <%= item[:source] %> <% end %>
+										<% if item[:pubDate] %> • <%= Date.parse(item[:pubDate]).strftime('%d %b %H:%M') rescue item[:pubDate] %> <% end %>
+									</div>
+								<% end %>
+							</li>
+						<% end %>
+					</ul>
+				<% elsif @offers.present? %>
 					<ul>
 						<% @offers.each do |o| %>
 							<li><%= link_to o.title, update_path(o) %></li>
 						<% end %>
 					</ul>
 				<% else %>
-					<div>No offers for selected city.</div>
+					<div><%= t('layout.no_local_news') %></div>
 				<% end %>
+				</div>
 			</div>
 
-			<div class="card">
-				<strong>Market Rates (sample)</strong>
-				<% if @market_rate %>
-					<div><%= @market_rate.city %> — <%= number_with_precision(@market_rate.rate, precision:2) %></div>
-				<% else %>
-					<div>No market rates available.</div>
+			<div class="card" style="padding:16px;margin-top:16px">
+				<strong style="font-size:18px;display:block;margin-bottom:12px">
+					<%= t('layout.market_wise_commodity_prices') %>
+				</strong>
+
+				<% if @market_rates.present? %>
+
+					<% @market_rates.each do |market, commodities| %>
+
+					<div style="margin-bottom:18px">
+
+						<h4 style="margin-bottom:8px;color:#2e7d32">
+						<%= market %>
+						</h4>
+
+						<table style="width:100%;border-collapse:collapse;font-size:15px">
+
+						<thead>
+							<tr style="background:#f5f5f5">
+							<th style="text-align:left;padding:6px">Commodity</th>
+							<th style="text-align:left;padding:6px">Variety</th>
+							<th style="text-align:left;padding:6px">Min</th>
+							<th style="text-align:left;padding:6px">Max</th>
+							<th style="text-align:left;padding:6px">Modal</th>
+							<th style="text-align:left;padding:6px">Date</th>
+							</tr>
+						</thead>
+
+						<tbody>
+
+						<% commodities.each do |commodity, rows| %>
+						<% rows.each do |r| %>
+
+							<tr style="border-bottom:1px solid #eee">
+
+							<td style="padding:6px">
+								<%= translate_domain_text(commodity) %>
+							</td>
+
+							<td style="padding:6px">
+								<%= translate_domain_text(r[:variety] || '-') %>
+							</td>
+
+							<td style="padding:6px">
+								<%= number_with_precision(r[:min_price], precision:0) %>
+							</td>
+
+							<td style="padding:6px">
+								<%= number_with_precision(r[:max_price], precision:0) %>
+							</td>
+
+							<td style="padding:6px;font-weight:600;color:#007bff">
+								<%= number_with_precision(r[:modal_price], precision:0) %>
+							</td>
+
+							<td style="padding:6px;color:#666">
+								<%= Date.strptime(r[:date], '%d/%m/%Y').strftime('%d %b') rescue r[:date] %>
+							</td>
+
+							</tr>
+
+						<% end %>
+						<% end %>
+
+					</tbody>
+
+					</table>
+
+				</div>
+
 				<% end %>
+
+			<% else %>
+
+				<div>No market-wise data available.</div>
+
+			<% end %>
 			</div>
 
 			<div class="card">
@@ -77,6 +288,41 @@
 	</div>
 
 	<div class="side-col">
+		<div class="panel">
+			<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+				<strong style="display:block">Weather (3-day)</strong>
+				<div style="text-align:right">
+					<% if @metals && (@metals[:gold] || @metals[:silver]) %>
+						<small style="display:block">Gold: <strong><%= @metals[:gold] ? "₹#{number_with_precision(@metals[:gold], precision:2)}" : '—' %></strong> /g</small>
+						<small style="display:block">Silver: <strong><%= @metals[:silver] ? "₹#{number_with_precision(@metals[:silver], precision:2)}" : '—' %></strong> /g</small>
+						<% if @metals_meta && @metals_meta['usd_to_inr'] %>
+							<small style="display:block;color:#666;font-size:11px">FX: <%= @metals_meta['usd_to_inr'] %> (source: <%= @metals_meta['source'] %>)</small>
+						<% end %>
+					<% else %>
+						<small>No metals data</small>
+					<% end %>
+				</div>
+			</div>
+			<% if @weather && @weather[:days].present? %>
+				<ul style="list-style:none;padding-left:0">
+				<% @weather[:days].each do |d| %>
+					<li style="padding:6px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center">
+						<div style="font-size:14px;color:#333">
+							<%= Date.parse(d[:date]).strftime('%a %d %b') rescue d[:date] %>
+						</div>
+						<div style="text-align:right;color:#555">
+							<div>Max: <strong><%= number_with_precision(d[:temp_max], precision:0) %>°C</strong></div>
+							<div>Min: <%= number_with_precision(d[:temp_min], precision:0) %>°C</div>
+							<div style="font-size:12px;color:#777">Precip: <%= number_with_precision(d[:precipitation] || 0, precision:1) %> mm</div>
+						</div>
+					</li>
+				<% end %>
+				</ul>
+			<% else %>
+				<div>No weather data available.</div>
+			<% end %>
+		</div>
+
 		<div id="side-panel" class="panel" style="display:none">
 			<h4>Latest Updates</h4>
 			<% if @updates.present? %>
@@ -114,12 +360,14 @@
 		if(!navigator.geolocation){ alert('Geolocation not supported'); return; }
 		navigator.geolocation.getCurrentPosition(function(pos){
 			var lat = pos.coords.latitude; var lng = pos.coords.longitude;
-			var url = new URL(window.location.href);
-			url.searchParams.set('use_location','1');
-			url.searchParams.set('lat',lat);
-			url.searchParams.set('lng',lng);
-			window.location = url.toString();
+				var url = new URL(window.location.href);
+				url.searchParams.set('use_location','1');
+				url.searchParams.set('lat',lat);
+				url.searchParams.set('lng',lng);
+				window.location = url.toString();
 		}, function(){ alert('Unable to retrieve your location'); });
 	}
+</script>
+
 </script>
 

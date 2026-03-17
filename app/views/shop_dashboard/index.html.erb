@@ -1,0 +1,27 @@
+<div class="panel">
+  <h1 style="margin:0">Shop Dashboard</h1>
+  <% if @shop %>
+    <h2 style="margin-top:8px"><%= @shop.name %></h2>
+    <div class="card">
+      <p><strong>Total revenue:</strong> <%= number_to_currency(@revenue_total) %></p>
+    </div>
+
+    <h3 style="margin-top:12px">Offers</h3>
+    <% if @offers.present? %>
+      <div class="grid">
+        <% @offers.each do |o| %>
+          <div class="card"><strong><%= o.title %></strong><div><%= truncate(o.content, length: 120) %></div></div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="card">No active offers.</div>
+    <% end %>
+
+    <div style="margin-top:12px">
+      <%= link_to 'Configure Shop', configure_myshop_path, class: 'toggle-btn' %>
+      <%= link_to 'Subscription', new_subscription_path, class: 'button' %>
+    </div>
+  <% else %>
+    <p>No shop found for your account.</p>
+  <% end %>
+</div>

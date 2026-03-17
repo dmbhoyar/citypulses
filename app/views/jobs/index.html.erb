@@ -1,20 +1,32 @@
-<h2>Jobs</h2>
+<div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h1 style="margin:0">Jobs</h1>
+    <div>
+      <% if user_signed_in? && (current_user.shopowner? || current_user.superadmin?) %>
+        <%= link_to 'Post Job', new_job_path, class: 'toggle-btn' %>
+      <% end %>
+    </div>
+  </div>
 
-<div class="jobs-search">
-  <%= form_with url: jobs_path, method: :get, local: true do |f| %>
-    <%= f.search_field :q, value: params[:q], placeholder: 'Search jobs...', class: 'search-input' %>
-    <%= f.submit 'Search' %>
-  <% end %>
+  <div class="jobs-search" style="margin-top:12px">
+    <%= form_with url: jobs_path, method: :get, local: true do |f| %>
+      <div style="display:flex;gap:8px">
+        <%= f.search_field :q, value: params[:q], placeholder: 'Search jobs...', class: 'search-input' %>
+        <%= f.submit 'Search', class: 'button' %>
+      </div>
+    <% end %>
+  </div>
 </div>
 
-<div class="jobs-list">
-  <%= link_to 'New Job', new_job_path, class: 'button' %>
-  <ul>
-    <% @jobs.each do |job| %>
-      <li>
-        <h3><%= link_to job.title, job_path(job) %></h3>
-        <p><%= job.company %> — <%= job.location %></p>
-      </li>
-    <% end %>
-  </ul>
+<div class="grid" style="margin-top:12px">
+  <% @jobs.each do |job| %>
+    <div class="card">
+      <h3><%= link_to job.title, job_path(job) %></h3>
+      <p><%= job.company %> — <%= job.location %></p>
+      <div style="margin-top:8px">
+        <%= link_to 'View', job_path(job), class: 'button' %>
+        <%= link_to 'Apply', apply_job_path(job), class: 'button' %>
+      </div>
+    </div>
+  <% end %>
 </div>

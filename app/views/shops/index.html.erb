@@ -1,0 +1,21 @@
+<div class="panel">
+  <h1 style="margin:0">Shops</h1>
+  <div style="margin-top:12px">
+    <% if user_signed_in? %>
+      <%= link_to 'Create Shop', new_shop_path, class: 'toggle-btn' %>
+    <% end %>
+  </div>
+</div>
+
+<div class="grid">
+  <% @shops.each do |s| %>
+    <div class="card">
+      <h3><%= link_to s.name, s %></h3>
+      <p><%= s.address %></p>
+      <p><%= s.phone %></p>
+      <div style="margin-top:8px">
+        <%= link_to 'View', s, class: 'button' %>
+      </div>
+    </div>
+  <% end %>
+</div>

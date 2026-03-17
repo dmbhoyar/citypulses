@@ -1,0 +1,34 @@
+<div class="panel">
+  <h1 style="margin-top:0"><%= @shop.name %></h1>
+  <div style="display:flex;gap:16px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px">
+      <p><strong>Address:</strong> <%= @shop.address %></p>
+      <p><strong>Phone:</strong> <%= @shop.phone %></p>
+    </div>
+    <div style="flex:2;min-width:200px">
+      <%= simple_format(@shop.description) %>
+    </div>
+  </div>
+
+  <% if user_signed_in? && (@shop.user == current_user || current_user.superadmin?) %>
+    <div style="margin-top:12px">
+      <%= link_to 'Edit Shop', edit_shop_path(@shop), class: 'toggle-btn' %>
+    </div>
+  <% end %>
+</div>
+
+<div class="panel">
+  <h2 style="margin-top:0">Listings</h2>
+  <% if @shop.listings.any? %>
+    <div class="grid">
+      <% @shop.listings.each do |l| %>
+        <div class="card">
+          <h4><%= link_to l.title, listing_path(l) %></h4>
+          <div><%= l.category %> — <%= l.price.present? ? number_to_currency(l.price) : 'Contact' %></div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>No listings yet.</p>
+  <% end %>
+</div>

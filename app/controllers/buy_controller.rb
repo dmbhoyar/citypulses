@@ -1,5 +1,5 @@
 class BuyController < ApplicationController
   def index
-    @buys = Buy.all
+    @buys = Listing.where(category: 'sell').order(created_at: :desc)
   end
 end

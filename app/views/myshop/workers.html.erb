@@ -1,0 +1,19 @@
+<div class="panel">
+  <h1 style="margin:0">Shop Workers</h1>
+  <% if @shop %>
+    <h2 style="margin-top:8px"><%= @shop.name %></h2>
+    <% if @workers.any? %>
+      <div class="card">
+        <ul>
+          <% @workers.each do |w| %>
+            <li><strong><%= w.first_name %> <%= w.last_name %></strong> — <%= w.email %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% else %>
+      <p>No workers added yet.</p>
+    <% end %>
+  <% else %>
+    <p>No shop found.</p>
+  <% end %>
+</div>

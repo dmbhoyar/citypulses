@@ -18,42 +18,44 @@
     <nav>
       <ul>
         <li class="icon-item <%= 'selected' if controller_name == 'home' %>" data-key="home">
-          <%= link_to root_path, class: 'icon-square', title: 'Home' do %>
-            <img src="/assets/icons/home.png" alt="Home" width="24" height="24" />
+            <%= link_to root_path, class: 'icon-square', title: 'Home' do %>
+            <%= safe_image_tag 'icons/home.png', alt: 'Home', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'updates' %>" data-key="updates">
-          <%= link_to updates_path, class: 'icon-square', title: 'Updates' do %>
-            <img src="/assets/icons/updates.png" alt="Updates" width="24" height="24" />
+            <%= link_to updates_path, class: 'icon-square', title: 'Updates' do %>
+            <%= safe_image_tag 'icons/updates.png', alt: 'Updates', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'jobs' %>" data-key="jobs">
-          <%= link_to jobs_path, class: 'icon-square', title: 'Jobs' do %>
-            <img src="/assets/icons/jobs.png" alt="Jobs" width="24" height="24" />
+            <%= link_to jobs_path, class: 'icon-square', title: 'Jobs' do %>
+            <%= safe_image_tag 'icons/jobs.jpeg', alt: 'Jobs', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'farming' %>" data-key="farming">
-          <%= link_to farming_index_path, class: 'icon-square', title: 'Farming' do %>
-            <img src="/assets/icons/farming.png" alt="Farming" width="24" height="24" />
+            <%= link_to farming_index_path, class: 'icon-square', title: 'Farming' do %>
+            <%= safe_image_tag 'icons/farming.png', alt: 'Farming', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'rents' %>" data-key="rents">
-          <%= link_to rents_path, class: 'icon-square', title: 'Rents' do %>
-            <img src="/assets/icons/rents.png" alt="Rents" width="24" height="24" />
+            <%= link_to rents_path, class: 'icon-square', title: 'Rents' do %>
+            <%= safe_image_tag 'icons/rent.png', alt: 'Rents', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'buy' %>" data-key="buy">
-          <%= link_to buy_index_path, class: 'icon-square', title: 'Buy & Sell' do %>
-            <img src="/assets/icons/buy.png" alt="Buy & Sell" width="24" height="24" />
+            <%= link_to buy_index_path, class: 'icon-square', title: 'Buy & Sell' do %>
+            <%= safe_image_tag 'icons/buy.png', alt: 'Buy & Sell', width: 24, height: 24 %>
           <% end %>
         </li>
         <li class="icon-item <%= 'selected' if controller_name == 'services' %>" data-key="services">
-          <%= link_to services_path, class: 'icon-square', title: 'Services' do %>
-            <img src="/assets/icons/services.png" alt="Services" width="24" height="24" />
+            <%= link_to services_path, class: 'icon-square', title: 'Services' do %>
+            <%= safe_image_tag 'icons/services.png', alt: 'Services', width: 24, height: 24 %>
           <% end %>
         </li>
       </ul>
     </nav>
+
+    <div class="iconbar-auth-placeholder" style="height:86px"></div>
 
     <div class="collapse">
       <button class="collapse-btn">›</button>
@@ -65,13 +67,15 @@
       <input type="text" placeholder="Search menu..." />
     </div>
 
-    <div class="panel-title">Home</div>
+    <div class="sidebar-content">
 
-    <ul class="panel-list">
+      <div class="panel-title">Home</div>
+
+      <ul class="panel-list">
       <% case controller_name %>
       <% when 'home' %>
-        <li><%= link_to 'Welcome', root_path, class: 'panel-link' %></li>
-        <li><%= link_to "Today's updates", updates_path, class: 'panel-link' %></li>
+        <li><%= link_to t('layout.todays_pulses', default: "Today's pulses"), root_path, class: 'panel-link' %></li>
+        <li><%= link_to t('layout.offers_and_benefits', default: 'Offers & Benefits'), offers_path, class: 'panel-link' %></li>
       <% when 'updates' %>
         <li><%= link_to 'News', updates_path, class: 'panel-link' %></li>
         <li><%= link_to 'Alerts', updates_path, class: 'panel-link' %></li>
@@ -88,8 +92,8 @@
         <li><%= link_to 'Electronics', buy_index_path, class: 'panel-link' %></li>
         <li><%= link_to 'Cars', buy_index_path, class: 'panel-link' %></li>
       <% when 'services' %>
-        <li><%= link_to 'Plumbing', services_index_path, class: 'panel-link' %></li>
-        <li><%= link_to 'Events', services_index_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Plumbing', services_path, class: 'panel-link' %></li>
+        <li><%= link_to 'Events', services_path, class: 'panel-link' %></li>
       <% end %>
     </ul>
 
@@ -100,6 +104,9 @@
         <li>Nearby events</li>
       </ul>
     </div>
+    </div>
+
+    <%= render 'shared/sidebar_auth' %>
   </aside>
 
   <!-- end sidebar block -->
@@ -115,25 +122,30 @@
       </div>
 
       <div class="nav-right">
-        <% if user_signed_in? %>
-          <span><%= current_user.email %></span>
-          <%= link_to "Logout", destroy_user_session_path, method: :delete %>
-        <% else %>
-          <%= link_to "Login", new_user_session_path %>
-          <%= link_to "Sign Up", new_user_registration_path %>
-        <% end %>
+  
 
-        <%# City selector placed near login details (uses City table) %>
+        <%# City selector placed near login details (uses City table). Prefer session-selected city so selection persists across pages. %>
+        <% current_city = City.find_by(id: session[:city_id]) rescue nil %>
         <% cities = City.order(:name).pluck(:name) rescue [] %>
         <form action="<%= root_path %>" method="get" class="city-select-form">
-          <select name="city" class="city-select">
+          <select name="city" class="city-select" onchange="this.form.submit()">
             <option value="">Select city</option>
             <% cities.each do |c| %>
-              <option value="<%= c %>" <%= 'selected' if params[:city] == c %>><%= c %></option>
+              <option value="<%= c %>" <%= 'selected' if params[:city] == c || (current_city && current_city.name == c) %>><%= c %></option>
             <% end %>
           </select>
-          <button type="submit" class="city-select-btn">Show</button>
         </form>
+          <!-- Language selector -->
+          <form id="locale-form" action="<%= request.path %>" method="get" style="display:inline-block;margin-left:10px">
+            <% params.except(:locale, :controller, :action).each do |k,v| %>
+              <input type="hidden" name="<%= k %>" value="<%= v %>" />
+            <% end %>
+            <select name="locale" onchange="this.form.submit()" style="padding:6px;border-radius:6px;border:1px solid #e6e6e6">
+              <option value="en" <%= 'selected' if I18n.locale.to_s == 'en' %>><%= t('layout.select_language', default: 'Select language') %>: English</option>
+              <option value="hi" <%= 'selected' if I18n.locale.to_s == 'hi' %>>हिंदी</option>
+              <option value="mr" <%= 'selected' if I18n.locale.to_s == 'mr' %>>मराठी</option>
+            </select>
+          </form>
       </div>
 
     </header>
@@ -152,39 +164,53 @@
   document.addEventListener('DOMContentLoaded', function(){
     const mapping = {
       home: {
-        title: 'Home',
-        items: [ ['H','Welcome'], ['U','Today\'s updates'] ],
-        rec: ['See today\'s top stories','Nearby events']
+        title: '<%= j t("layout.home") %>',
+        items: [ ['U','<%= j t("layout.todays_pulses", default: "Today's pulses") %>','<%= root_path %>'], ['O','<%= j t("layout.offers_and_benefits", default: "Offers & Benefits") %>','<%= offers_path %>'] ],
+        rec: ['<%= j t("layout.see_top_stories") %>','<%= j t("layout.nearby_events") %>','<%= j t("layout.city_offers", default: "City offers & benefits") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#a10b0b" xmlns="http://www.w3.org/2000/svg"><path d="M3 11.5L12 4l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-8.5z"/></svg>',
+        color: '#a10b0b'
       },
       updates: {
-        title: 'Updates',
-        items: [ ['N','News'], ['A','Alerts'] ],
-        rec: ['Subscribe to alerts','Manage notifications']
+        title: '<%= j t("layout.updates") %>',
+        items: [ ['N','<%= j t("layout.news") %>'], ['A','<%= j t("layout.alerts") %>'] ],
+        rec: ['<%= j t("layout.subscribe_alerts", default: "Subscribe to alerts") %>','<%= j t("layout.manage_notifications", default: "Manage notifications") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#0b5ed7" xmlns="http://www.w3.org/2000/svg"><path d="M3 5h18v2H3zM3 11h12v2H3zM3 17h18v2H3z"/></svg>',
+        color: '#0b5ed7'
       },
       jobs: {
-        title: 'Jobs',
-        items: [ ['S','shopes'], ['G','Goverment'] ],
-        rec: ['Post a job','Manage applications']
+        title: '<%= j t("layout.jobs") %>',
+        items: [ ['S','<%= j t("layout.shops", default: "Shops") %>'], ['G','<%= j t("layout.government", default: "Government") %>'] ],
+        rec: ['<%= j t("layout.post_a_job", default: "Post a job") %>','<%= j t("layout.manage_applications", default: "Manage applications") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#1761a0" xmlns="http://www.w3.org/2000/svg"><path d="M6 7h12v2H6zM6 11h12v6H6z"/></svg>',
+        color: '#1761a0'
       },
       farming: {
-        title: 'Farming',
-        items: [ ['F','Crops'], ['M','Markets'] ],
-        rec: ['Farming tips','Local suppliers']
+        title: '<%= j t("layout.farming") %>',
+        items: [ ['F','<%= j t("layout.crops") %>'], ['M','<%= j t("layout.markets") %>'] ],
+        rec: ['<%= j t("layout.farming_tips", default: "Farming tips") %>','<%= j t("layout.local_suppliers", default: "Local suppliers") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#2e7d32" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3 7h-6l3-7zM6 12h12v8H6z"/></svg>',
+        color: '#2e7d32'
       },
       rents: {
-        title: 'Rents',
-        items: [ ['R','Houses'], ['F','Flats'] ],
-        rec: ['New listings','Saved searches']
+        title: '<%= j t("layout.rents") %>',
+        items: [ ['R','<%= j t("layout.houses") %>'], ['F','<%= j t("layout.flats") %>'] ],
+        rec: ['<%= j t("layout.new_listings", default: "New listings") %>','<%= j t("layout.saved_searches", default: "Saved searches") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#ff8f00" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l9 7h-3v8h-12v-8H3l9-7z"/></svg>',
+        color: '#ff8f00'
       },
       buy: {
-        title: 'Buy & Sell',
-        items: [ ['B','Electronics'], ['C','Cars'] ],
-        rec: ['Create listing','Popular categories']
+        title: '<%= j t("layout.buy") %>',
+        items: [ ['B','<%= j t("layout.electronics") %>'], ['C','<%= j t("layout.cars") %>'] ],
+        rec: ['<%= j t("layout.create_listing", default: "Create listing") %>','<%= j t("layout.popular_categories", default: "Popular categories") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#6f42c1" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zM7 10h10v8H7z"/></svg>',
+        color: '#6f42c1'
       },
       services: {
-        title: 'Services',
-        items: [ ['S','Plumbing'], ['E','Events'] ],
-        rec: ['Top rated','Request a service']
+        title: '<%= j t("layout.services") %>',
+        items: [ ['S','<%= j t("layout.plumbing") %>'], ['E','<%= j t("layout.events") %>'] ],
+        rec: ['<%= j t("layout.top_rated", default: "Top rated") %>','<%= j t("layout.request_service", default: "Request a service") %>'],
+        icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="#0d6efd" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16v2H4zM4 10h16v8H4z"/></svg>',
+        color: '#0d6efd'
       }
     };
 
@@ -198,8 +224,16 @@
     function renderFor(key){
       const def = mapping[key];
       if(!def) return;
-      panelTitle.textContent = def.title;
-      panelList.innerHTML = def.items.map(i=>`<li><span class="badge">${i[0]}</span><span class="label">${i[1]}</span></li>`).join('');
+      // set title with icon and color indicator
+      panelTitle.innerHTML = (def.icon || '') + `<span class="panel-title-text">${def.title}</span>`;
+      panelTitle.classList.add('active');
+      panelTitle.style.borderLeftColor = def.color || '#a10b0b';
+      // render list items with badges; support optional URL at i[2]
+      panelList.innerHTML = def.items.map((i, idx)=>{
+        const badge = `<span class="badge">${i[0]}</span>`;
+        const label = i[2] ? `<a class="label" href="${i[2]}">${i[1]}</a>` : `<span class="label">${i[1]}</span>`;
+        return `<li class="${idx===0? 'active-item':''}">${badge}${label}</li>`;
+      }).join('');
       recList.innerHTML = def.rec.map(r=>`<li>${r}</li>`).join('');
     }
 
