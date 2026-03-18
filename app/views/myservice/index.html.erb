@@ -1,0 +1,15 @@
+<div class="myservice-page">
+  <h2><%= @shop.name %> — Service Page</h2>
+  <p>Preview of configured page:</p>
+  <div class="shop-page-preview">
+    <% if @page.present? %>
+      <pre><%= JSON.pretty_generate(@page) %></pre>
+    <% else %>
+      <p>No fields configured yet. <%= link_to 'Configure page', configure_myservice_path %></p>
+    <% end %>
+  </div>
+  <p>
+    <%= link_to 'Configure Web Page', configure_myservice_path, class: 'button' %>
+    <%= link_to 'Business Card', business_card_myservice_path, class: 'button' %>
+  </p>
+</div>

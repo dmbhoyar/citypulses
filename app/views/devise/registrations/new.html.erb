@@ -20,6 +20,11 @@
     </div>
 
     <div class="field">
+      <%= f.label :role, 'Register as' %>
+      <%= f.select :role, options_for_select([['Normal','normal'], ['Shop Owner','shopowner'], ['Shop Worker','shopworker'], ['Service Provider','service_provider']], selected: f.object.role || 'normal'), {}, class: 'form-control' %>
+    </div>
+
+    <div class="field">
       <%= f.label :email %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
     </div>

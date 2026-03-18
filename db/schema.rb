@@ -116,6 +116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_174500) do
     t.datetime "created_at", null: false
     t.text "description"
     t.string "name", null: false
+    t.json "page_config"
     t.string "phone"
     t.string "template"
     t.datetime "updated_at", null: false
@@ -156,6 +157,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_174500) do
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
+    t.text "experience"
     t.string "first_name", default: "", null: false
     t.string "last_name", default: "", null: false
     t.string "mobile_number", default: "", null: false
@@ -165,6 +167,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_17_174500) do
     t.string "role", default: "normal", null: false
     t.bigint "shop_id"
     t.datetime "subscription_expires_at"
+    t.string "tags"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

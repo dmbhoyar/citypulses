@@ -26,6 +26,9 @@ Rails.application.routes.draw do
     get :configure, on: :collection
     patch :configure, on: :collection
     get :workers, on: :collection
+      post :create_worker, on: :collection
+    patch :update_worker, on: :collection
+    get 'worker/:id/experience', to: 'myshop#worker_experience', on: :collection, as: :worker_experience
   end
   post 'myshop/subscribe', to: 'myshop#subscribe', as: :myshop_subscribe
   get 'myshop/offer/new', to: 'myshop#offer_new', as: :myshop_offer_new
@@ -49,6 +52,15 @@ Rails.application.routes.draw do
   resources :rents, only: [:index]
   resources :buy
   resources :services
+
+  # Myservice routes for service providers
+  resource :myservice, only: [:show], controller: 'myservice' do
+    get :configure, on: :collection
+    patch :configure, on: :collection
+    post :configure, on: :collection
+    get :business_card, on: :collection
+    post :business_card, on: :collection
+  end
 
   # Offers and Benefits page
   get 'offers', to: 'offers#index', as: :offers

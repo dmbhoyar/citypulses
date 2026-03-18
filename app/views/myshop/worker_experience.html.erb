@@ -1,0 +1,48 @@
+<div class="experience-letter" style="max-width:800px;margin:20px auto;padding:20px;border:1px solid #ddd;background:#fff">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <h2><%= @shop.name %></h2>
+      <div><%= @shop.address %></div>
+      <div>Phone: <%= @shop.phone %></div>
+    </div>
+    <div style="text-align:right">
+      <% if @shop.template.present? %>
+        <!-- placeholder for shop logo if available -->
+        <div style="width:120px;height:60px;background:#f5f5f5;display:flex;align-items:center;justify-content:center">Logo</div>
+      <% end %>
+    </div>
+  </div>
+
+  <hr />
+
+  <h3>Experience Certificate</h3>
+  <p>Date: <%= l(Date.today) %></p>
+
+  <p>To whom it may concern,</p>
+
+  <p>
+    This is to certify that <strong><%= @worker.full_name %></strong> has worked with <strong><%= @shop.name %></strong> as a <strong><%= @worker.tags.to_s.present? ? @worker.tags.split(',').first : 'Shop Worker' %></strong>.
+  </p>
+
+  <% if @worker.experience.present? %>
+    <p><strong>Experience details:</strong></p>
+    <p><%= simple_format(@worker.experience) %></p>
+  <% end %>
+
+  <p>
+    We wish them success in their future endeavors.
+  </p>
+
+  <div style="margin-top:40px;display:flex;justify-content:space-between;align-items:center">
+    <div>
+      <p>_______________________</p>
+      <p><strong><%= @shop.name %></strong></p>
+      <p>Authorized signatory</p>
+    </div>
+    <div style="text-align:right">
+      <p>Signature</p>
+    </div>
+  </div>
+
+  <p style="margin-top:20px;font-size:12px;color:#666">This is a system generated letter from CityPulses.</p>
+</div>

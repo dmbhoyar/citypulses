@@ -11,6 +11,14 @@
       <%= link_to 'Profile', edit_user_registration_path, class: 'button' %>
       <%= button_to 'Logout', destroy_user_session_path, method: :delete, form: { class: 'logout-form' }, class: 'button primary' %>
     </div>
+    <div style="margin-top:8px">
+      <% if current_user.service_provider? %>
+        <%= link_to 'My Service', myservice_path, class: 'button' %>
+      <% end %>
+      <% if current_user.shopowner? %>
+        <%= link_to 'My Shop', myshop_path, class: 'button' %>
+      <% end %>
+    </div>
   <% else %>
     <div class="auth-links">
       <%= link_to 'Login', new_user_session_path, class: 'button' %>

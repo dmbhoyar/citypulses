@@ -1,3 +1,122 @@
+<div class="myshop-workers">
+  <h2>Shop Workers</h2>
+
+  <h3>Add Worker</h3>
+  <%= form_with url: create_worker_myshop_path, method: :post do |f| %>
+    <div>
+      <%= label_tag 'worker[first_name]', 'First name' %><br />
+      <%= text_field_tag 'worker[first_name]', '', required: true %>
+    </div>
+    <div>
+      <%= label_tag 'worker[last_name]', 'Last name' %><br />
+      <%= text_field_tag 'worker[last_name]', '' %>
+    </div>
+    <div>
+      <%= label_tag 'worker[email]', 'Email' %><br />
+      <%= email_field_tag 'worker[email]', '', required: true %>
+    </div>
+    <div>
+      <%= label_tag 'worker[mobile_number]', 'Mobile' %><br />
+      <%= telephone_field_tag 'worker[mobile_number]', '' %>
+    </div>
+    <p>
+      <%= submit_tag 'Create worker', class: 'button primary' %>
+      <%= link_to 'Back', myshop_path, class: 'button' %>
+    </p>
+  <% end %>
+
+  <h3>Existing Workers</h3>
+  <% if @workers.any? %>
+    <table class="workers-table" style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Role</th>
+          <th>Experience</th>
+          <th>Tags</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @workers.each do |w| %>
+          <tr>
+            <td><%= w.full_name %></td>
+            <td><%= mail_to w.email %></td>
+            <td><%= w.mobile_number %></td>
+            <td><%= w.role %></td>
+            <td><%= truncate(w.experience.to_s, length: 80) %></td>
+            <td><%= w.tags.to_s %></td>
+            <td>
+              <%= form_with url: update_worker_myshop_path, method: :patch, local: true do |f| %>
+                <%= hidden_field_tag 'worker[id]', w.id %>
+                <div style="margin-bottom:6px">
+                  <%= label_tag "worker_experience_#{w.id}", 'Experience' %><br />
+                  <%= text_area_tag 'worker[experience]', w.experience, rows: 2, style: 'width:100%' %>
+                </div>
+                <div style="margin-bottom:6px">
+                  <%= label_tag "worker_tags_#{w.id}", 'Tags (comma separated)' %><br />
+                  <%= text_field_tag 'worker[tags]', w.tags, style: 'width:100%' %>
+                </div>
+                <div>
+                  <%= submit_tag 'Save', class: 'button' %>
+                  <%= link_to 'Experience Letter', worker_experience_myshop_path(id: w.id), class: 'button', target: '_blank' %>
+                </div>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p>No workers added yet.</p>
+  <% end %>
+</div>
+<div class="myshop-workers">
+  <h2>Shop Workers</h2>
+
+  <div style="display:flex;gap:24px">
+    <div style="flex:1">
+      <h3>Existing Workers</h3>
+      <% if @workers.any? %>
+        <ul>
+          <% @workers.each do |w| %>
+            <li><strong><%= w.full_name %></strong> — <%= w.email %> — <%= w.mobile_number %></li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p>No workers yet.</p>
+      <% end %>
+    </div>
+
+    <div style="width:360px">
+      <h3>Add Worker</h3>
+      <%= form_with url: workers_myshop_path, method: :post do |f| %>
+        <div>
+          <%= label_tag 'worker[first_name]', 'First name' %><br />
+          <%= text_field_tag 'worker[first_name]', '', required: true %>
+        </div>
+        <div>
+          <%= label_tag 'worker[last_name]', 'Last name' %><br />
+          <%= text_field_tag 'worker[last_name]', '' %>
+        </div>
+        <div>
+          <%= label_tag 'worker[email]', 'Email' %><br />
+          <%= email_field_tag 'worker[email]', '', required: true %>
+        </div>
+        <div>
+          <%= label_tag 'worker[mobile_number]', 'Mobile' %><br />
+          <%= text_field_tag 'worker[mobile_number]', '' %>
+        </div>
+        <p>
+          <%= submit_tag 'Create Worker', class: 'button primary' %>
+        </p>
+      <% end %>
+      <p>Workers will receive an email to set their password.</p>
+    </div>
+  </div>
+</div>
 <div class="panel">
   <h1 style="margin:0">Shop Workers</h1>
   <% if @shop %>

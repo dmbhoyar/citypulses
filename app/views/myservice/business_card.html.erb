@@ -1,0 +1,13 @@
+<div class="myservice-business-card">
+  <h2>Business Card Configuration</h2>
+  <p>List your offered services (one per line):</p>
+  <%= form_with url: business_card_myservice_path, method: :post do |f| %>
+    <div>
+      <%= text_area_tag :services_list, (@shop.page_config && @shop.page_config['services_list'] || []).join("\n"), rows: 8, style: 'width:100%' %>
+    </div>
+    <p>
+      <%= submit_tag 'Save', class: 'button primary' %>
+      <%= link_to 'Back', myservice_path, class: 'button' %>
+    </p>
+  <% end %>
+</div>

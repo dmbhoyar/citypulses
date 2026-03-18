@@ -12,6 +12,10 @@ class User < ApplicationRecord
     role == 'shopowner'
   end
 
+  def service_provider?
+    role == 'service_provider'
+  end
+
   def shopworker?
     role == 'shopworker'
   end
