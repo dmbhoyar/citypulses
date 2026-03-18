@@ -25,7 +25,7 @@ class SubscriptionsController < ApplicationController
       # create Stripe Checkout Session and include subscription id in metadata
       session = Stripe::Checkout::Session.create(
         payment_method_types: ['card'],
-        line_items: [{ price_data: { currency: 'inr', product_data: { name: "CityPulses Shop Subscription" }, unit_amount: (amount * 100).to_i }, quantity: 1 }],
+        line_items: [{ price_data: { currency: 'inr', product_data: { name: "NagarHub Shop Subscription" }, unit_amount: (amount * 100).to_i }, quantity: 1 }],
         mode: 'payment',
         metadata: { subscription_id: sub.id },
         success_url: root_url + '?sub_success=1',
